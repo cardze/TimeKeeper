@@ -1,0 +1,38 @@
+/* 
+  Global CSS Reset and Base Styles
+  These styles apply to the entire application
+*/
+
+/* Remove default margin and padding from all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+/* Set base font and background for the entire page */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; /* Use system fonts for better performance and native look */
+  -webkit-font-smoothing: antialiased; /* Improve font rendering on macOS */
+  -moz-osx-font-smoothing: grayscale; /* Improve font rendering on Firefox for macOS */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Beautiful gradient background */
+  min-height: 100vh; /* Ensure body takes at least full viewport height */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 20px; /* Add padding to prevent content from touching edges on small screens */
+}
+
+/* Ensure the root element takes full width */
+#root {
+  width: 100%;
+  max-width: 800px; /* Limit maximum width for better readability on large screens */
+}
+
+/* Style for code elements */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; /* Use monospace fonts for code */
+}
