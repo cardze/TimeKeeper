@@ -1,0 +1,110 @@
+/* 
+  App Component Styles
+  These styles define the layout and appearance of the main App component
+*/
+
+/* Main app container */
+.App {
+  background-color: white; /* White background for the main content area */
+  border-radius: 20px; /* Rounded corners for modern look */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* Drop shadow for depth */
+  overflow: hidden; /* Prevent content from overflowing rounded corners */
+  min-height: 600px; /* Minimum height to ensure content doesn't look cramped */
+}
+
+/* Header section styles */
+.App-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradient background matching body */
+  color: white; /* White text color for contrast */
+  padding: 40px 20px; /* Vertical and horizontal padding */
+  text-align: center; /* Center-align text */
+}
+
+/* Main heading in header */
+.App-header h1 {
+  font-size: 2.5rem; /* Large font size for prominence */
+  margin-bottom: 10px; /* Space below heading */
+  font-weight: 700; /* Bold font weight */
+}
+
+/* Subtitle/paragraph in header */
+.App-header p {
+  font-size: 1.1rem; /* Slightly larger than normal text */
+  opacity: 0.9; /* Slightly transparent for subtle effect */
+  font-weight: 300; /* Light font weight */
+}
+
+/* Main content area */
+.App-main {
+  padding: 30px; /* Padding around main content */
+  max-height: 70vh; /* Limit height to 70% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+}
+
+/* Custom scrollbar styling for webkit browsers (Chrome, Safari, Edge) */
+.App-main::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+/* Scrollbar track (background) */
+.App-main::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light gray background */
+  border-radius: 10px; /* Rounded scrollbar track */
+}
+
+/* Scrollbar thumb (draggable part) */
+.App-main::-webkit-scrollbar-thumb {
+  background: #667eea; /* Purple color matching theme */
+  border-radius: 10px; /* Rounded scrollbar thumb */
+}
+
+/* Scrollbar thumb on hover */
+.App-main::-webkit-scrollbar-thumb:hover {
+  background: #764ba2; /* Darker purple on hover */
+}
+
+/* Footer section */
+.App-footer {
+  background-color: #f8f9fa; /* Light gray background */
+  padding: 20px; /* Padding around footer content */
+  text-align: center; /* Center-align text */
+  color: #6c757d; /* Gray text color */
+  font-size: 0.9rem; /* Slightly smaller font */
+  border-top: 1px solid #dee2e6; /* Subtle top border to separate from content */
+}
+
+/* Responsive design for tablets and smaller devices */
+@media (max-width: 768px) {
+  /* Reduce header padding on smaller screens */
+  .App-header {
+    padding: 30px 15px;
+  }
+
+  /* Reduce heading size on smaller screens */
+  .App-header h1 {
+    font-size: 2rem;
+  }
+
+  /* Reduce main content padding on smaller screens */
+  .App-main {
+    padding: 20px;
+  }
+}
+
+/* Responsive design for mobile phones */
+@media (max-width: 480px) {
+  /* Further reduce heading size on mobile */
+  .App-header h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Reduce subtitle size on mobile */
+  .App-header p {
+    font-size: 1rem;
+  }
+
+  /* Further reduce main content padding on mobile */
+  .App-main {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,143 @@
+/*
+  TimeEntryForm Component Styles
+  Styles for the form that allows users to add new time entries
+*/
+
+/* Main form container */
+.time-entry-form {
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 25px; /* Internal spacing */
+  margin-bottom: 30px; /* Space below the form */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Form heading */
+.time-entry-form h2 {
+  color: #333; /* Dark gray text */
+  margin-bottom: 20px; /* Space below heading */
+  font-size: 1.5rem; /* Heading size */
+  font-weight: 600; /* Semi-bold weight */
+}
+
+/* Individual form field container */
+.form-group {
+  margin-bottom: 20px; /* Space between form fields */
+}
+
+/* Labels for form inputs */
+.form-group label {
+  display: block; /* Make label take full width */
+  margin-bottom: 8px; /* Space between label and input */
+  color: #495057; /* Medium gray text */
+  font-weight: 500; /* Medium font weight */
+  font-size: 0.95rem; /* Slightly smaller than normal text */
+}
+
+/* Common styles for text inputs, number inputs, and select dropdowns */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; /* Full width of container */
+  padding: 12px 15px; /* Internal padding for comfortable interaction */
+  border: 2px solid #dee2e6; /* Light gray border */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 1rem; /* Standard font size */
+  font-family: inherit; /* Use same font as parent */
+  transition: all 0.3s ease; /* Smooth transition for interactive states */
+  background-color: white; /* White background */
+}
+
+/* Focus state for inputs - when user clicks/tabs into field */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none; /* Remove default browser outline */
+  border-color: #667eea; /* Purple border matching app theme */
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Subtle purple glow */
+}
+
+/* Placeholder text styling */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #adb5bd; /* Light gray for placeholder text */
+  opacity: 1; /* Full opacity (Firefox needs this) */
+}
+
+/* Textarea specific styling */
+.form-group textarea {
+  resize: vertical; /* Allow vertical resizing only */
+  min-height: 80px; /* Minimum height to show content comfortably */
+}
+
+/* Submit button styling */
+.submit-button {
+  width: 100%; /* Full width */
+  padding: 14px 20px; /* Comfortable padding */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradient background */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 1.1rem; /* Slightly larger text */
+  font-weight: 600; /* Semi-bold */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  margin-top: 10px; /* Space above button */
+}
+
+/* Hover state for submit button */
+.submit-button:hover {
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); /* Purple shadow on hover */
+}
+
+/* Active state for submit button (when clicked) */
+.submit-button:active {
+  transform: translateY(0); /* Remove lift effect when pressed */
+}
+
+/* Disabled state for submit button */
+.submit-button:disabled {
+  background: #6c757d; /* Gray background when disabled */
+  cursor: not-allowed; /* Not-allowed cursor */
+  opacity: 0.6; /* Reduced opacity */
+}
+
+/* Responsive styles for tablets */
+@media (max-width: 768px) {
+  /* Reduce padding on smaller screens */
+  .time-entry-form {
+    padding: 20px;
+  }
+
+  /* Reduce heading size */
+  .time-entry-form h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Responsive styles for mobile phones */
+@media (max-width: 480px) {
+  /* Further reduce padding on mobile */
+  .time-entry-form {
+    padding: 15px;
+  }
+
+  /* Reduce form group margin */
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  /* Adjust input padding for mobile */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 12px;
+  }
+
+  /* Adjust button padding for mobile */
+  .submit-button {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+}

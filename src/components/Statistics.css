@@ -1,0 +1,203 @@
+/*
+  Statistics Component Styles
+  Styles for displaying time tracking statistics and category breakdowns
+*/
+
+/* Main statistics container */
+.statistics {
+  margin-bottom: 30px; /* Space below the statistics section */
+}
+
+/* Section heading */
+.statistics h2 {
+  color: #333; /* Dark gray text */
+  margin-bottom: 20px; /* Space below heading */
+  font-size: 1.5rem; /* Heading size */
+  font-weight: 600; /* Semi-bold */
+}
+
+/* General stats card styling */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Purple gradient background */
+  color: white; /* White text for contrast */
+  border-radius: 15px; /* Rounded corners */
+  padding: 25px; /* Internal spacing */
+  margin-bottom: 20px; /* Space below card */
+  text-align: center; /* Center-align content */
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); /* Purple shadow for depth */
+  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for stats card */
+.stats-card:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+}
+
+/* Label text in stats card */
+.stat-label {
+  font-size: 0.95rem; /* Slightly smaller text */
+  font-weight: 500; /* Medium weight */
+  opacity: 0.9; /* Slightly transparent */
+  margin-bottom: 10px; /* Space below label */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 1px; /* Slight letter spacing */
+}
+
+/* Main value display in stats card */
+.stat-value {
+  font-size: 2.5rem; /* Large text for prominence */
+  font-weight: 700; /* Bold weight */
+  margin-bottom: 5px; /* Small space below */
+}
+
+/* Subtitle text in stats card */
+.stat-subtitle {
+  font-size: 0.9rem; /* Smaller text */
+  opacity: 0.8; /* More transparent for hierarchy */
+}
+
+/* Category breakdown section */
+.category-breakdown {
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* Internal spacing */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Category breakdown heading */
+.category-breakdown h3 {
+  color: #333; /* Dark gray */
+  font-size: 1.2rem; /* Medium heading size */
+  font-weight: 600; /* Semi-bold */
+  margin-bottom: 15px; /* Space below heading */
+}
+
+/* Container for category list */
+.category-list {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack items vertically */
+  gap: 15px; /* Space between items */
+}
+
+/* Individual category item */
+.category-item {
+  background-color: white; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 15px; /* Internal spacing */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect for category item */
+.category-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+
+/* Category header (name and time) */
+.category-header {
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Space items apart */
+  align-items: center; /* Center vertically */
+  margin-bottom: 10px; /* Space below header */
+}
+
+/* Category name with emoji */
+.category-name {
+  font-weight: 600; /* Semi-bold */
+  color: #495057; /* Medium gray */
+  font-size: 1rem; /* Standard text size */
+  text-transform: capitalize; /* Capitalize first letter */
+}
+
+/* Category time display */
+.category-time {
+  font-weight: 700; /* Bold */
+  color: #667eea; /* Purple color matching theme */
+  font-size: 1.1rem; /* Slightly larger */
+}
+
+/* Progress bar container (outer shell) */
+.progress-bar-container {
+  height: 30px; /* Bar height */
+  background-color: #e9ecef; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  overflow: hidden; /* Hide overflow for clean edges */
+  position: relative; /* For positioning child elements */
+}
+
+/* Progress bar fill (colored part showing percentage) */
+.progress-bar-fill {
+  height: 100%; /* Full height of container */
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); /* Purple gradient */
+  border-radius: 15px; /* Rounded corners */
+  display: flex; /* Use flexbox for centering */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  transition: width 0.5s ease; /* Smooth animation when width changes */
+  position: relative; /* For z-index stacking */
+  min-width: 50px; /* Minimum width to show percentage text */
+}
+
+/* Percentage text inside progress bar */
+.progress-percentage {
+  color: white; /* White text for contrast */
+  font-weight: 600; /* Semi-bold */
+  font-size: 0.85rem; /* Smaller text to fit in bar */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow for readability */
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  /* Adjust stat value size */
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  /* Reduce category breakdown padding */
+  .category-breakdown {
+    padding: 15px;
+  }
+
+  /* Reduce progress bar height */
+  .progress-bar-container {
+    height: 25px;
+  }
+}
+
+/* Responsive design for mobile phones */
+@media (max-width: 480px) {
+  /* Further reduce stat value size */
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  /* Reduce stats card padding */
+  .stats-card {
+    padding: 20px;
+  }
+
+  /* Stack category header on very small screens if needed */
+  .category-header {
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 5px; /* Small gap between wrapped items */
+  }
+
+  /* Adjust category name size */
+  .category-name {
+    font-size: 0.95rem;
+  }
+
+  /* Adjust category time size */
+  .category-time {
+    font-size: 1rem;
+  }
+
+  /* Further reduce progress bar height */
+  .progress-bar-container {
+    height: 22px;
+  }
+
+  /* Smaller percentage text */
+  .progress-percentage {
+    font-size: 0.8rem;
+  }
+}

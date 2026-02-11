@@ -1,0 +1,276 @@
+/*
+  TimeList Component Styles
+  Styles for displaying the list of time entries
+*/
+
+/* Main container for the time list */
+.time-list {
+  margin-top: 30px; /* Space above the list */
+}
+
+/* Section heading */
+.time-list h2 {
+  color: #333; /* Dark gray text */
+  margin-bottom: 20px; /* Space below heading */
+  font-size: 1.5rem; /* Heading size */
+  font-weight: 600; /* Semi-bold */
+}
+
+/* Container for all entry cards */
+.entries-container {
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack cards vertically */
+  gap: 15px; /* Space between cards */
+}
+
+/* Individual entry card */
+.entry-card {
+  background-color: white; /* White background */
+  border: 2px solid #e9ecef; /* Light gray border */
+  border-radius: 12px; /* Rounded corners */
+  padding: 20px; /* Internal spacing */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  position: relative; /* For positioning child elements */
+}
+
+/* Hover effect for entry cards */
+.entry-card:hover {
+  border-color: #667eea; /* Purple border on hover */
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); /* Purple shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Entry header containing category and duration */
+.entry-header {
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Space items apart */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 12px; /* Space below header */
+}
+
+/* Category badge */
+.category-badge {
+  display: inline-block; /* Inline block for badge */
+  background-color: #e7f0ff; /* Light blue background */
+  color: #667eea; /* Purple text */
+  padding: 6px 12px; /* Badge padding */
+  border-radius: 20px; /* Pill-shaped */
+  font-size: 0.85rem; /* Smaller text */
+  font-weight: 600; /* Semi-bold */
+  text-transform: capitalize; /* Capitalize first letter */
+}
+
+/* Duration display */
+.duration {
+  color: #667eea; /* Purple color */
+  font-weight: 600; /* Semi-bold */
+  font-size: 0.95rem; /* Slightly smaller than normal */
+}
+
+/* Activity name heading */
+.activity-name {
+  color: #212529; /* Very dark gray, almost black */
+  font-size: 1.3rem; /* Larger heading */
+  font-weight: 600; /* Semi-bold */
+  margin-bottom: 8px; /* Space below */
+}
+
+/* Notes paragraph */
+.notes {
+  color: #6c757d; /* Medium gray */
+  font-size: 0.95rem; /* Slightly smaller text */
+  margin-bottom: 10px; /* Space below */
+  line-height: 1.5; /* Comfortable line spacing */
+  font-style: italic; /* Italicize notes for distinction */
+}
+
+/* Timestamp display */
+.timestamp {
+  color: #adb5bd; /* Light gray */
+  font-size: 0.85rem; /* Small text */
+  margin-bottom: 15px; /* Space below */
+}
+
+/* Container for action buttons */
+.entry-actions {
+  display: flex; /* Use flexbox */
+  gap: 10px; /* Space between buttons */
+}
+
+/* Common button styles */
+.edit-button,
+.delete-button {
+  padding: 8px 16px; /* Button padding */
+  border: none; /* Remove default border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 0.9rem; /* Button text size */
+  font-weight: 500; /* Medium weight */
+  cursor: pointer; /* Pointer cursor */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Edit button specific styles */
+.edit-button {
+  background-color: #667eea; /* Purple background */
+  color: white; /* White text */
+}
+
+/* Edit button hover effect */
+.edit-button:hover {
+  background-color: #5568d3; /* Darker purple on hover */
+  transform: translateY(-1px); /* Slight lift */
+}
+
+/* Delete button specific styles */
+.delete-button {
+  background-color: #dc3545; /* Red background */
+  color: white; /* White text */
+}
+
+/* Delete button hover effect */
+.delete-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+  transform: translateY(-1px); /* Slight lift */
+}
+
+/* Empty state container (shown when no entries exist) */
+.empty-state {
+  text-align: center; /* Center text */
+  padding: 60px 20px; /* Generous padding */
+  color: #6c757d; /* Gray text */
+}
+
+/* Empty state paragraphs */
+.empty-state p {
+  font-size: 1.1rem; /* Slightly larger text */
+  margin-bottom: 10px; /* Space between paragraphs */
+}
+
+/* Empty state first paragraph (main message) */
+.empty-state p:first-child {
+  font-size: 1.5rem; /* Larger text for main message */
+  margin-bottom: 15px; /* More space below */
+}
+
+/* Edit mode container */
+.edit-mode {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack elements vertically */
+  gap: 12px; /* Space between form elements */
+}
+
+/* Input and select fields in edit mode */
+.edit-mode input,
+.edit-mode select,
+.edit-mode textarea {
+  width: 100%; /* Full width */
+  padding: 10px 12px; /* Padding for comfortable interaction */
+  border: 2px solid #dee2e6; /* Light gray border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 0.95rem; /* Text size */
+  font-family: inherit; /* Use parent font */
+  transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+/* Focus state for edit mode inputs */
+.edit-mode input:focus,
+.edit-mode select:focus,
+.edit-mode textarea:focus {
+  outline: none; /* Remove default outline */
+  border-color: #667eea; /* Purple border on focus */
+}
+
+/* Textarea in edit mode */
+.edit-mode textarea {
+  resize: vertical; /* Allow vertical resize only */
+  min-height: 60px; /* Minimum height */
+}
+
+/* Container for edit mode buttons */
+.edit-buttons {
+  display: flex; /* Use flexbox */
+  gap: 10px; /* Space between buttons */
+}
+
+/* Save and cancel button common styles */
+.save-button,
+.cancel-button {
+  flex: 1; /* Equal width buttons */
+  padding: 10px 16px; /* Button padding */
+  border: none; /* Remove default border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 0.95rem; /* Text size */
+  font-weight: 600; /* Semi-bold */
+  cursor: pointer; /* Pointer cursor */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Save button specific styles */
+.save-button {
+  background-color: #28a745; /* Green background */
+  color: white; /* White text */
+}
+
+/* Save button hover effect */
+.save-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Cancel button specific styles */
+.cancel-button {
+  background-color: #6c757d; /* Gray background */
+  color: white; /* White text */
+}
+
+/* Cancel button hover effect */
+.cancel-button:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  /* Reduce card padding on smaller screens */
+  .entry-card {
+    padding: 15px;
+  }
+
+  /* Stack header items on small screens if needed */
+  .entry-header {
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 8px; /* Space between wrapped items */
+  }
+
+  /* Adjust activity name size */
+  .activity-name {
+    font-size: 1.2rem;
+  }
+}
+
+/* Responsive design for mobile phones */
+@media (max-width: 480px) {
+  /* Further reduce card padding */
+  .entry-card {
+    padding: 12px;
+  }
+
+  /* Stack action buttons vertically on mobile */
+  .entry-actions {
+    flex-direction: column; /* Stack vertically */
+  }
+
+  /* Make buttons full width on mobile */
+  .edit-button,
+  .delete-button {
+    width: 100%; /* Full width */
+  }
+
+  /* Adjust activity name size for mobile */
+  .activity-name {
+    font-size: 1.1rem;
+  }
+
+  /* Adjust empty state padding */
+  .empty-state {
+    padding: 40px 15px;
+  }
+}
