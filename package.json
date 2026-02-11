@@ -36,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/cardze/TimeKeeper/issues"
   },
-  "homepage": "https://github.com/cardze/TimeKeeper#readme",
+  "homepage": ".",
   "dependencies": {
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
