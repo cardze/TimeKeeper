@@ -14,7 +14,7 @@ import './index.css';
 // This corresponds to <div id="root"></div> in public/index.html
 const rootElement = document.getElementById('root');
 
-// Create a root using React 18's new createRoot API
+// Create a root using React's createRoot API (introduced in React 18+)
 // This is the modern way to render React applications with concurrent features
 const root = ReactDOM.createRoot(rootElement);
 
