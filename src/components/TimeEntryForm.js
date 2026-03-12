@@ -25,6 +25,9 @@ function TimeEntryForm({ onAddEntry }) {
   // State for optional notes/description
   const [notes, setNotes] = useState('');
 
+  // State for task progress percentage
+  const [progress, setProgress] = useState('0');
+
   /**
    * Form submission handler
    * Prevents default form submission behavior and validates/processes the data
@@ -48,12 +51,19 @@ function TimeEntryForm({ onAddEntry }) {
       return;
     }
 
+    const progressValue = Number(progress);
+    if (!Number.isInteger(progressValue) || progressValue < 0 || progressValue > 100) {
+      alert('Progress must be an integer between 0 and 100');
+      return;
+    }
+
     // Create the entry object with all the form data
     const entry = {
       activity: activity.trim(), // Remove extra whitespace
       duration: parseFloat(duration), // Convert string to number
       category, // ES6 shorthand for category: category
       notes: notes.trim(), // Remove extra whitespace from notes
+      progress: progressValue,
     };
 
     // Call the parent's callback function to add the entry
@@ -64,6 +74,7 @@ function TimeEntryForm({ onAddEntry }) {
     setDuration('');
     setCategory('work');
     setNotes('');
+    setProgress('0');
   };
 
   // JSX return - defines the form UI
@@ -136,6 +147,21 @@ function TimeEntryForm({ onAddEntry }) {
             <option value="personal">🧘 Personal</option>
             <option value="other">📌 Other</option>
           </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="progress">Task Progress (%):</label>
+          <input
+            type="number"
+            id="progress"
+            value={progress}
+            onChange={(e) => setProgress(e.target.value)}
+            placeholder="e.g., 0 to 100"
+            min="0"
+            max="100"
+            step="1"
+            required
+          />
         </div>
 
         {/* Optional Notes Field */}

@@ -12,6 +12,16 @@ import './Statistics.css';
  * @param {Array} timeEntries - Array of all time entry objects
  */
 function Statistics({ timeEntries }) {
+  const getEntryProgress = (entry) => {
+    const parsed = Number(entry.progress);
+
+    if (!Number.isFinite(parsed)) {
+      return 0;
+    }
+
+    return Math.min(100, Math.max(0, Math.round(parsed)));
+  };
+
   /**
    * Calculate total time spent across all entries
    * @returns {number} Total duration in minutes
@@ -105,9 +115,25 @@ function Statistics({ timeEntries }) {
     return ((categoryTime / totalTime) * 100).toFixed(1);
   };
 
+  const calculateAverageProgress = () => {
+    if (timeEntries.length === 0) return 0;
+
+    const totalProgress = timeEntries.reduce((total, entry) => {
+      return total + getEntryProgress(entry);
+    }, 0);
+
+    return Math.round(totalProgress / timeEntries.length);
+  };
+
+  const calculateCompletedCount = () => {
+    return timeEntries.filter((entry) => getEntryProgress(entry) === 100).length;
+  };
+
   // Calculate statistics
   const totalTime = calculateTotalTime();
   const categoryBreakdown = calculateCategoryBreakdown();
+  const averageProgress = calculateAverageProgress();
+  const completedTaskCount = calculateCompletedCount();
   
   // Get sorted categories by time spent (descending order)
   const sortedCategories = Object.entries(categoryBreakdown)
@@ -129,6 +155,19 @@ function Statistics({ timeEntries }) {
         <div className="stat-label">Total Time Tracked</div>
         <div className="stat-value">{formatTime(totalTime)}</div>
         <div className="stat-subtitle">{timeEntries.length} activities</div>
+      </div>
+
+      <div className="progress-stats-grid">
+        <div className="stats-card progress-metric-card">
+          <div className="stat-label">Average Progress</div>
+          <div className="stat-value">{averageProgress}%</div>
+          <div className="stat-subtitle">Across all activities</div>
+        </div>
+        <div className="stats-card progress-metric-card">
+          <div className="stat-label">Completed Tasks</div>
+          <div className="stat-value">{completedTaskCount}</div>
+          <div className="stat-subtitle">Progress at 100%</div>
+        </div>
       </div>
 
       {/* Category breakdown section */}

@@ -48,6 +48,11 @@
   background-color: white; /* White background */
 }
 
+/* Keep numeric fields visually aligned with other controls */
+.form-group input[type='number'] {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Focus state for inputs - when user clicks/tabs into field */
 .form-group input:focus,
 .form-group select:focus,

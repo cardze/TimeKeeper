@@ -28,6 +28,17 @@
   transition: transform 0.3s ease; /* Smooth transition for hover effect */
 }
 
+.progress-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.progress-metric-card {
+  margin-bottom: 0;
+}
+
 /* Hover effect for stats card */
 .stats-card:hover {
   transform: translateY(-3px); /* Lift effect on hover */
@@ -155,6 +166,10 @@
   /* Reduce category breakdown padding */
   .category-breakdown {
     padding: 15px;
+  }
+
+  .progress-stats-grid {
+    grid-template-columns: 1fr;
   }
 
   /* Reduce progress bar height */

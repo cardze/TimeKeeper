@@ -27,7 +27,7 @@ function TimeList({ entries, onDelete, onEdit }) {
     // Set the ID of the entry being edited
     setEditingId(entry.id);
     // Copy the entry data to the edit state
-    setEditedEntry({ ...entry });
+    setEditedEntry({ ...entry, progress: Number.isFinite(Number(entry.progress)) ? Number(entry.progress) : 0 });
   };
 
   /**
@@ -56,12 +56,19 @@ function TimeList({ entries, onDelete, onEdit }) {
       return;
     }
 
+    const progressValue = Number(editedEntry.progress);
+    if (!Number.isInteger(progressValue) || progressValue < 0 || progressValue > 100) {
+      alert('Progress must be an integer between 0 and 100');
+      return;
+    }
+
     // Call the parent's edit callback with the edited data
     onEdit(id, {
       activity: editedEntry.activity.trim(),
       duration: parseFloat(editedEntry.duration),
       category: editedEntry.category,
       notes: editedEntry.notes?.trim() || '',
+      progress: progressValue,
     });
 
     // Exit edit mode
@@ -194,6 +201,16 @@ function TimeList({ entries, onDelete, onEdit }) {
                   <option value="personal">🧘 Personal</option>
                   <option value="other">📌 Other</option>
                 </select>
+
+                <input
+                  type="number"
+                  value={editedEntry.progress ?? 0}
+                  onChange={(e) => setEditedEntry({ ...editedEntry, progress: e.target.value })}
+                  placeholder="Progress (%)"
+                  min="0"
+                  max="100"
+                  step="1"
+                />
                 
                 {/* Notes textarea */}
                 <textarea
@@ -230,8 +247,12 @@ function TimeList({ entries, onDelete, onEdit }) {
                   <span className="category-badge">
                     {getCategoryEmoji(entry.category)} {entry.category}
                   </span>
+                </div>
+
+                <div className="entry-metrics">
                   {/* Duration display */}
                   <span className="duration">⏱️ {formatDuration(entry.duration)}</span>
+                  <span className="entry-progress">🎯 {Number.isFinite(Number(entry.progress)) ? Math.round(Number(entry.progress)) : 0}%</span>
                 </div>
                 
                 {/* Activity name */}

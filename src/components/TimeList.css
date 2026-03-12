@@ -67,6 +67,22 @@
   font-size: 0.95rem; /* Slightly smaller than normal */
 }
 
+/* Row containing duration and progress indicators */
+.entry-metrics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+/* Progress percentage display */
+.entry-progress {
+  color: #0d6efd;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
 /* Activity name heading */
 .activity-name {
   color: #212529; /* Very dark gray, almost black */
@@ -238,6 +254,10 @@
   .entry-header {
     flex-wrap: wrap; /* Allow wrapping */
     gap: 8px; /* Space between wrapped items */
+  }
+
+  .entry-metrics {
+    flex-wrap: wrap;
   }
 
   /* Adjust activity name size */

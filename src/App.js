@@ -15,14 +15,43 @@ import './App.css';
  * It manages the state of all time entries and coordinates between child components
  */
 function App() {
+  const normalizeProgress = (value) => {
+    const parsed = Number(value);
+
+    if (!Number.isFinite(parsed)) {
+      return 0;
+    }
+
+    return Math.min(100, Math.max(0, Math.round(parsed)));
+  };
+
+  const normalizeEntry = (entry) => ({
+    ...entry,
+    progress: normalizeProgress(entry.progress),
+  });
+
   // State to store all time entries
   // useState hook creates a state variable and a function to update it
   // We initialize it with data from localStorage or an empty array
   const [timeEntries, setTimeEntries] = useState(() => {
     // Try to load saved entries from localStorage when the component first mounts
     const savedEntries = localStorage.getItem('timeEntries');
-    // If there are saved entries, parse and return them; otherwise return empty array
-    return savedEntries ? JSON.parse(savedEntries) : [];
+
+    if (!savedEntries) {
+      return [];
+    }
+
+    try {
+      const parsedEntries = JSON.parse(savedEntries);
+      if (!Array.isArray(parsedEntries)) {
+        return [];
+      }
+
+      // Ensure legacy entries without progress are safely normalized.
+      return parsedEntries.map(normalizeEntry);
+    } catch (error) {
+      return [];
+    }
   });
 
   // useEffect hook to save timeEntries to localStorage whenever they change
@@ -38,11 +67,11 @@ function App() {
    */
   const addTimeEntry = (entry) => {
     // Create a new entry object with a unique ID and the provided data
-    const newEntry = {
+    const newEntry = normalizeEntry({
       id: Date.now(), // Use timestamp as a simple unique ID
       ...entry, // Spread operator to include all properties from the entry parameter
       timestamp: new Date().toISOString(), // Add ISO timestamp for when entry was created
-    };
+    });
     
     // Update state by adding the new entry to the beginning of the array
     // We use the spread operator to create a new array (React requires immutability)
@@ -68,7 +97,7 @@ function App() {
     // Map through all entries and replace the one with matching ID
     setTimeEntries(timeEntries.map(entry => 
       entry.id === id 
-        ? { ...entry, ...updatedEntry } // Merge existing entry with updates
+        ? normalizeEntry({ ...entry, ...updatedEntry }) // Merge existing entry with updates
         : entry // Keep other entries unchanged
     ));
   };
