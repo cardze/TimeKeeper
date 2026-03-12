@@ -19,15 +19,79 @@ function TimeList({ entries, onDelete, onEdit }) {
   // State to store the edited values temporarily while editing
   const [editedEntry, setEditedEntry] = useState({});
 
+  const normalizeEventCards = (cards) => {
+    if (!Array.isArray(cards)) {
+      return [];
+    }
+
+    return cards
+      .map((card) => ({
+        duration: Number(card?.duration) > 0 ? Number(card.duration) : 0,
+        detail: typeof card?.detail === 'string' ? card.detail.trim() : '',
+      }))
+      .filter((card) => card.duration > 0 && card.detail);
+  };
+
+  const getComputedDuration = (entry) => {
+    const cards = normalizeEventCards(entry.eventCards);
+
+    if (cards.length > 0) {
+      return cards.reduce((total, card) => total + card.duration, 0);
+    }
+
+    const legacyDuration = Number(entry.duration);
+    return Number.isFinite(legacyDuration) && legacyDuration > 0 ? legacyDuration : 0;
+  };
+
+  const updateEditedCard = (index, field, value) => {
+    setEditedEntry({
+      ...editedEntry,
+      eventCards: editedEntry.eventCards.map((card, cardIndex) => (
+        cardIndex === index ? { ...card, [field]: value } : card
+      )),
+    });
+  };
+
+  const addEditedCard = () => {
+    setEditedEntry({
+      ...editedEntry,
+      eventCards: [...(editedEntry.eventCards || []), { duration: '', detail: '' }],
+    });
+  };
+
+  const removeEditedCard = (index) => {
+    const currentCards = editedEntry.eventCards || [];
+    if (currentCards.length === 1) {
+      return;
+    }
+
+    setEditedEntry({
+      ...editedEntry,
+      eventCards: currentCards.filter((_, cardIndex) => cardIndex !== index),
+    });
+  };
+
   /**
    * Initiates edit mode for a specific entry
    * @param {Object} entry - The entry object to edit
    */
   const startEdit = (entry) => {
+    const normalizedCards = normalizeEventCards(entry.eventCards);
+    const duration = getComputedDuration(entry);
+
+    const cardsForEdit = normalizedCards.length > 0
+      ? normalizedCards.map((card) => ({ duration: String(card.duration), detail: card.detail }))
+      : [{ duration: duration > 0 ? String(duration) : '', detail: entry.notes?.trim() || 'Work segment' }];
+
     // Set the ID of the entry being edited
     setEditingId(entry.id);
     // Copy the entry data to the edit state
-    setEditedEntry({ ...entry, progress: Number.isFinite(Number(entry.progress)) ? Number(entry.progress) : 0 });
+    setEditedEntry({
+      ...entry,
+      duration,
+      eventCards: cardsForEdit,
+      progress: Number.isFinite(Number(entry.progress)) ? Number(entry.progress) : 0,
+    });
   };
 
   /**
@@ -44,15 +108,9 @@ function TimeList({ entries, onDelete, onEdit }) {
    * @param {number} id - The ID of the entry being saved
    */
   const saveEdit = (id) => {
-    // Validate that activity and duration are provided
-    if (!editedEntry.activity?.trim() || !editedEntry.duration) {
-      alert('Please fill in both activity and duration fields');
-      return;
-    }
-
-    // Validate that duration is positive
-    if (parseFloat(editedEntry.duration) <= 0) {
-      alert('Duration must be a positive number');
+    // Validate that activity is provided
+    if (!editedEntry.activity?.trim()) {
+      alert('Please fill in the activity field');
       return;
     }
 
@@ -62,10 +120,34 @@ function TimeList({ entries, onDelete, onEdit }) {
       return;
     }
 
+    let normalizedCards = [];
+    try {
+      normalizedCards = (editedEntry.eventCards || []).map((card, index) => {
+        const duration = Number(card.duration);
+        const detail = card.detail?.trim() || '';
+
+        if (!Number.isFinite(duration) || duration <= 0) {
+          throw new Error(`Event ${index + 1}: duration must be a positive number`);
+        }
+
+        if (!detail) {
+          throw new Error(`Event ${index + 1}: detail is required`);
+        }
+
+        return { duration, detail };
+      });
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+
+    const derivedDuration = normalizedCards.reduce((total, card) => total + card.duration, 0);
+
     // Call the parent's edit callback with the edited data
     onEdit(id, {
       activity: editedEntry.activity.trim(),
-      duration: parseFloat(editedEntry.duration),
+      duration: derivedDuration,
+      eventCards: normalizedCards,
       category: editedEntry.category,
       notes: editedEntry.notes?.trim() || '',
       progress: progressValue,
@@ -163,7 +245,11 @@ function TimeList({ entries, onDelete, onEdit }) {
       {/* Container for all entry cards */}
       <div className="entries-container">
         {/* Map through entries array and render each entry */}
-        {entries.map((entry) => (
+        {entries.map((entry) => {
+          const normalizedCards = normalizeEventCards(entry.eventCards);
+          const durationValue = getComputedDuration(entry);
+
+          return (
           // Individual entry card with unique key
           <div key={entry.id} className="entry-card">
             {/* Check if this entry is being edited */}
@@ -178,15 +264,43 @@ function TimeList({ entries, onDelete, onEdit }) {
                   placeholder="Activity name"
                 />
                 
-                {/* Duration input */}
-                <input
-                  type="number"
-                  value={editedEntry.duration || ''}
-                  onChange={(e) => setEditedEntry({ ...editedEntry, duration: e.target.value })}
-                  placeholder="Duration (min)"
-                  min="0"
-                  step="0.5"
-                />
+                <div className="edit-event-cards">
+                  {(editedEntry.eventCards || []).map((card, index) => (
+                    <div key={index} className="edit-event-card-row">
+                      <input
+                        type="number"
+                        value={card.duration}
+                        onChange={(e) => updateEditedCard(index, 'duration', e.target.value)}
+                        placeholder="Minutes"
+                        min="0"
+                        step="1"
+                      />
+                      <input
+                        type="text"
+                        value={card.detail}
+                        onChange={(e) => updateEditedCard(index, 'detail', e.target.value)}
+                        placeholder="What did you do?"
+                      />
+                      <button
+                        type="button"
+                        className="small-remove-button"
+                        onClick={() => removeEditedCard(index)}
+                        disabled={(editedEntry.eventCards || []).length === 1}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" className="small-add-button" onClick={addEditedCard}>
+                    + Add Event Card
+                  </button>
+                  <p className="edit-duration-preview">
+                    Total: {formatDuration((editedEntry.eventCards || []).reduce((total, card) => {
+                      const duration = Number(card.duration);
+                      return Number.isFinite(duration) && duration > 0 ? total + duration : total;
+                    }, 0))}
+                  </p>
+                </div>
                 
                 {/* Category select dropdown */}
                 <select
@@ -251,7 +365,7 @@ function TimeList({ entries, onDelete, onEdit }) {
 
                 <div className="entry-metrics">
                   {/* Duration display */}
-                  <span className="duration">⏱️ {formatDuration(entry.duration)}</span>
+                  <span className="duration">⏱️ {formatDuration(durationValue)}</span>
                   <span className="entry-progress">🎯 {Number.isFinite(Number(entry.progress)) ? Math.round(Number(entry.progress)) : 0}%</span>
                 </div>
                 
@@ -261,6 +375,20 @@ function TimeList({ entries, onDelete, onEdit }) {
                 {/* Notes section (only shown if notes exist) */}
                 {entry.notes && (
                   <p className="notes">{entry.notes}</p>
+                )}
+
+                {normalizedCards.length > 0 && (
+                  <div className="event-breakdown">
+                    <h4>Event Breakdown</h4>
+                    <ul>
+                      {normalizedCards.map((card, index) => (
+                        <li key={`${entry.id}-card-${index}`}>
+                          <span className="event-segment-duration">{formatDuration(card.duration)}</span>
+                          <span className="event-segment-detail">{card.detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
                 
                 {/* Timestamp showing when entry was created */}
@@ -291,7 +419,8 @@ function TimeList({ entries, onDelete, onEdit }) {
               </>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

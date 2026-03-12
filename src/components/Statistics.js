@@ -12,6 +12,22 @@ import './Statistics.css';
  * @param {Array} timeEntries - Array of all time entry objects
  */
 function Statistics({ timeEntries }) {
+  const getEntryDuration = (entry) => {
+    if (Array.isArray(entry.eventCards) && entry.eventCards.length > 0) {
+      const totalFromCards = entry.eventCards.reduce((total, card) => {
+        const duration = Number(card?.duration);
+        return Number.isFinite(duration) && duration > 0 ? total + duration : total;
+      }, 0);
+
+      if (totalFromCards > 0) {
+        return totalFromCards;
+      }
+    }
+
+    const legacyDuration = Number(entry.duration);
+    return Number.isFinite(legacyDuration) && legacyDuration > 0 ? legacyDuration : 0;
+  };
+
   const getEntryProgress = (entry) => {
     const parsed = Number(entry.progress);
 
@@ -31,7 +47,7 @@ function Statistics({ timeEntries }) {
     // reduce takes an accumulator and current value, returns accumulated sum
     return timeEntries.reduce((total, entry) => {
       // Add current entry's duration to the total
-      return total + parseFloat(entry.duration);
+      return total + getEntryDuration(entry);
     }, 0); // Start with 0 as initial value
   };
 
@@ -54,7 +70,7 @@ function Statistics({ timeEntries }) {
       }
       
       // Add current entry's duration to the category total
-      breakdown[category] += parseFloat(entry.duration);
+      breakdown[category] += getEntryDuration(entry);
     });
     
     // Return the breakdown object

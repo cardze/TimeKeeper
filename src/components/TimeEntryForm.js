@@ -16,8 +16,8 @@ function TimeEntryForm({ onAddEntry }) {
   // useState returns [currentValue, setterFunction]
   const [activity, setActivity] = useState('');
   
-  // State for the duration input field (in minutes)
-  const [duration, setDuration] = useState('');
+  // State for dynamic event cards that describe work segments
+  const [eventCards, setEventCards] = useState([{ duration: '', detail: '' }]);
   
   // State for the category/type of activity
   const [category, setCategory] = useState('work');
@@ -28,6 +28,35 @@ function TimeEntryForm({ onAddEntry }) {
   // State for task progress percentage
   const [progress, setProgress] = useState('0');
 
+  const updateEventCard = (index, field, value) => {
+    setEventCards(eventCards.map((card, cardIndex) => (
+      cardIndex === index ? { ...card, [field]: value } : card
+    )));
+  };
+
+  const addEventCard = () => {
+    setEventCards([...eventCards, { duration: '', detail: '' }]);
+  };
+
+  const removeEventCard = (index) => {
+    if (eventCards.length === 1) {
+      return;
+    }
+
+    setEventCards(eventCards.filter((_, cardIndex) => cardIndex !== index));
+  };
+
+  const calculateTotalDuration = () => {
+    return eventCards.reduce((total, card) => {
+      const duration = Number(card.duration);
+      if (!Number.isFinite(duration) || duration <= 0) {
+        return total;
+      }
+
+      return total + duration;
+    }, 0);
+  };
+
   /**
    * Form submission handler
    * Prevents default form submission behavior and validates/processes the data
@@ -37,17 +66,35 @@ function TimeEntryForm({ onAddEntry }) {
     // Prevent the default form submission which would reload the page
     e.preventDefault();
     
-    // Validation: Check if activity name and duration are provided
+    // Validation: Check if activity name is provided
     // trim() removes whitespace from both ends of the string
-    if (!activity.trim() || !duration) {
+    if (!activity.trim()) {
       // Show an alert if validation fails
-      alert('Please fill in both activity and duration fields');
+      alert('Please fill in the activity field');
       return; // Exit the function early if validation fails
     }
 
-    // Validation: Check if duration is a positive number
-    if (parseFloat(duration) <= 0) {
-      alert('Duration must be a positive number');
+    let normalizedCards = [];
+    try {
+      normalizedCards = eventCards.map((card, index) => {
+        const parsedDuration = Number(card.duration);
+        const detail = card.detail.trim();
+
+        if (!Number.isFinite(parsedDuration) || parsedDuration <= 0) {
+          throw new Error(`Event ${index + 1}: duration must be a positive number`);
+        }
+
+        if (!detail) {
+          throw new Error(`Event ${index + 1}: detail is required`);
+        }
+
+        return {
+          duration: parsedDuration,
+          detail,
+        };
+      });
+    } catch (error) {
+      alert(error.message);
       return;
     }
 
@@ -60,7 +107,7 @@ function TimeEntryForm({ onAddEntry }) {
     // Create the entry object with all the form data
     const entry = {
       activity: activity.trim(), // Remove extra whitespace
-      duration: parseFloat(duration), // Convert string to number
+      eventCards: normalizedCards,
       category, // ES6 shorthand for category: category
       notes: notes.trim(), // Remove extra whitespace from notes
       progress: progressValue,
@@ -71,7 +118,7 @@ function TimeEntryForm({ onAddEntry }) {
 
     // Reset all form fields to their initial state after successful submission
     setActivity('');
-    setDuration('');
+    setEventCards([{ duration: '', detail: '' }]);
     setCategory('work');
     setNotes('');
     setProgress('0');
@@ -106,24 +153,41 @@ function TimeEntryForm({ onAddEntry }) {
           />
         </div>
 
-        {/* Duration Input Field */}
         <div className="form-group">
-          <label htmlFor="duration">Duration (minutes):</label>
-          {/* 
-            Number input for duration
-            - min: minimum allowed value (0)
-            - step: allows decimal values (0.5 for half minutes)
-          */}
-          <input
-            type="number"
-            id="duration"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            placeholder="e.g., 30, 60, 90"
-            min="0"
-            step="0.5"
-            required
-          />
+          <label>Event Cards (duration + detail):</label>
+          <p className="form-help-text">Add one or more time segments. Total is calculated automatically.</p>
+          <div className="event-cards-list">
+            {eventCards.map((card, index) => (
+              <div key={index} className="event-card-row">
+                <input
+                  type="number"
+                  value={card.duration}
+                  onChange={(e) => updateEventCard(index, 'duration', e.target.value)}
+                  placeholder="Minutes"
+                  min="0"
+                  step="1"
+                />
+                <input
+                  type="text"
+                  value={card.detail}
+                  onChange={(e) => updateEventCard(index, 'detail', e.target.value)}
+                  placeholder="What did you do in this segment?"
+                />
+                <button
+                  type="button"
+                  className="event-card-remove"
+                  onClick={() => removeEventCard(index)}
+                  disabled={eventCards.length === 1}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          <button type="button" className="event-card-add" onClick={addEventCard}>
+            + Add Event Card
+          </button>
+          <p className="event-total">Total planned duration: {calculateTotalDuration()} min</p>
         </div>
 
         {/* Category Selection Dropdown */}

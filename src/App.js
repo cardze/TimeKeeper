@@ -15,6 +15,36 @@ import './App.css';
  * It manages the state of all time entries and coordinates between child components
  */
 function App() {
+  const normalizeDuration = (value) => {
+    const parsed = Number(value);
+
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return 0;
+    }
+
+    return parsed;
+  };
+
+  const normalizeEventCards = (cards) => {
+    if (!Array.isArray(cards)) {
+      return [];
+    }
+
+    return cards
+      .map((card) => {
+        const duration = Number(card?.duration);
+        return {
+          duration: Number.isFinite(duration) && duration > 0 ? duration : 0,
+          detail: typeof card?.detail === 'string' ? card.detail.trim() : '',
+        };
+      })
+      .filter((card) => card.duration > 0 && card.detail);
+  };
+
+  const getDurationFromCards = (cards) => {
+    return cards.reduce((total, card) => total + card.duration, 0);
+  };
+
   const normalizeProgress = (value) => {
     const parsed = Number(value);
 
@@ -27,8 +57,20 @@ function App() {
 
   const normalizeEntry = (entry) => ({
     ...entry,
+    eventCards: normalizeEventCards(entry.eventCards),
+    duration: 0,
     progress: normalizeProgress(entry.progress),
   });
+
+  const finalizeEntry = (entry) => {
+    const normalized = normalizeEntry(entry);
+    const durationFromCards = getDurationFromCards(normalized.eventCards);
+
+    return {
+      ...normalized,
+      duration: durationFromCards > 0 ? durationFromCards : normalizeDuration(entry.duration),
+    };
+  };
 
   // State to store all time entries
   // useState hook creates a state variable and a function to update it
@@ -48,7 +90,7 @@ function App() {
       }
 
       // Ensure legacy entries without progress are safely normalized.
-      return parsedEntries.map(normalizeEntry);
+      return parsedEntries.map(finalizeEntry);
     } catch (error) {
       return [];
     }
@@ -67,7 +109,7 @@ function App() {
    */
   const addTimeEntry = (entry) => {
     // Create a new entry object with a unique ID and the provided data
-    const newEntry = normalizeEntry({
+    const newEntry = finalizeEntry({
       id: Date.now(), // Use timestamp as a simple unique ID
       ...entry, // Spread operator to include all properties from the entry parameter
       timestamp: new Date().toISOString(), // Add ISO timestamp for when entry was created
@@ -97,7 +139,7 @@ function App() {
     // Map through all entries and replace the one with matching ID
     setTimeEntries(timeEntries.map(entry => 
       entry.id === id 
-        ? normalizeEntry({ ...entry, ...updatedEntry }) // Merge existing entry with updates
+        ? finalizeEntry({ ...entry, ...updatedEntry }) // Merge existing entry with updates
         : entry // Keep other entries unchanged
     ));
   };

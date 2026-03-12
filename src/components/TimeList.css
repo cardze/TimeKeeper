@@ -83,6 +83,45 @@
   font-size: 0.95rem;
 }
 
+.event-breakdown {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #dbe4ff;
+  border-radius: 8px;
+  background-color: #f6f9ff;
+}
+
+.event-breakdown h4 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  color: #3f4a6b;
+}
+
+.event-breakdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-breakdown li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.event-segment-duration {
+  min-width: 60px;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.event-segment-detail {
+  color: #495057;
+}
+
 /* Activity name heading */
 .activity-name {
   color: #212529; /* Very dark gray, almost black */
@@ -202,6 +241,52 @@
   min-height: 60px; /* Minimum height */
 }
 
+.edit-event-cards {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.edit-event-card-row {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.small-add-button,
+.small-remove-button {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.small-add-button {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.small-remove-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.small-remove-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.edit-duration-preview {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+}
+
 /* Container for edit mode buttons */
 .edit-buttons {
   display: flex; /* Use flexbox */
@@ -260,6 +345,10 @@
     flex-wrap: wrap;
   }
 
+  .edit-event-card-row {
+    grid-template-columns: 90px 1fr auto;
+  }
+
   /* Adjust activity name size */
   .activity-name {
     font-size: 1.2rem;
@@ -276,6 +365,15 @@
   /* Stack action buttons vertically on mobile */
   .entry-actions {
     flex-direction: column; /* Stack vertically */
+  }
+
+  .edit-event-card-row {
+    grid-template-columns: 1fr;
+  }
+
+  .small-add-button,
+  .small-remove-button {
+    width: 100%;
   }
 
   /* Make buttons full width on mobile */

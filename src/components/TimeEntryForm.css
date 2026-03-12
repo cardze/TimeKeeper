@@ -75,6 +75,66 @@
   min-height: 80px; /* Minimum height to show content comfortably */
 }
 
+.form-help-text {
+  margin: 0 0 10px;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.event-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-card-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.event-card-add,
+.event-card-remove {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-card-add {
+  margin-top: 12px;
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.event-card-add:hover {
+  background-color: #0a58ca;
+}
+
+.event-card-remove {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.event-card-remove:hover {
+  background-color: #bb2d3b;
+}
+
+.event-card-remove:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.event-total {
+  margin-top: 10px;
+  color: #495057;
+  font-weight: 600;
+}
+
 /* Submit button styling */
 .submit-button {
   width: 100%; /* Full width */
@@ -119,6 +179,10 @@
   .time-entry-form h2 {
     font-size: 1.3rem;
   }
+
+  .event-card-row {
+    grid-template-columns: 100px 1fr auto;
+  }
 }
 
 /* Responsive styles for mobile phones */
@@ -144,5 +208,14 @@
   .submit-button {
     padding: 12px 16px;
     font-size: 1rem;
+  }
+
+  .event-card-row {
+    grid-template-columns: 1fr;
+  }
+
+  .event-card-add,
+  .event-card-remove {
+    width: 100%;
   }
 }
